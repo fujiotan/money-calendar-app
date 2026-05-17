@@ -127,7 +127,7 @@ h1 {margin:0 5px;font-size:24px;white-space: nowrap;}
 }
 
 .day-cell.selected {
-  border: 2px solid #aaa;
+  border: 2px solid #5584ff;
   font-weight: bold;
 }
 

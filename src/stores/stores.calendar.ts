@@ -31,6 +31,7 @@ export const useCalendarStore = defineStore('calendar', () => {
   }
 
 const clickDate = (dateKey: string) => {
+  // クリックされた日をselectedDateに指定
   selectedDate.value = new Date(dateKey)
 }
 

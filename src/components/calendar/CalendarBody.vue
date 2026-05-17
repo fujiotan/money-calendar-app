@@ -1,22 +1,28 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import type { DateCell } from '../../types/types.calendar';
 
-import { useCalendarStore } from '../../stores/stores.calendar'
-const storeCalendar = useCalendarStore()
+const props = defineProps<{
+  createDate: DateCell[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'clickDate', dateKey: string): void
+}>()
+
 
 </script>
 
 
 <template>
   <div class="week-row">
-    <div class="week-cell" v-for="date in storeCalendar.createDate" :key="date.id">
+    <div class="week-cell" v-for="date in props.createDate" :key="date.id">
       <div class="day-cell"
       :class="{
         today: date.isToday,
         selected: date.isSelected,
         sameMonth: date.isMonth
       }"
-      @click="storeCalendar.clickDate(date.dateKey)"
+      @click="emit('clickDate', date.dateKey)"
       >
         {{ date.dateNum}}
       </div>
