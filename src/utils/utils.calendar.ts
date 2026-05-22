@@ -19,8 +19,13 @@ export const createFirstDate = (date:Date) => {
   return `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-01`
 }
 
-// 月表示
-export const formatedMonth = (date: Date): string => {
+// 月日本語表示
+export const formatedMonthJp = (date: Date): string => {
   return `${date.getFullYear()}年${date.getMonth() + 1}月`
+}
+
+// 日日本語表示
+export const formatedDateJp = (date: Date): string => {
+  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`
 }
 

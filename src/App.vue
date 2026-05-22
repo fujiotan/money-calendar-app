@@ -173,6 +173,9 @@ h1 {margin:0 5px;font-size:24px;white-space: nowrap;}
   gap: 8px;
 }
 
+form div {margin: 15px;}
+form select, form input {padding: 5px;min-width: 150px;}
+
 .item-form {
   display: grid;
   gap: 12px;

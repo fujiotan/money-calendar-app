@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from "pinia";
 
-import { formatedDate, formatedMonth, sameDate, sameMonth, createFirstDate } from '../utils/utils.calendar'
+import { formatedDate, formatedMonthJp, sameDate, sameMonth, createFirstDate } from '../utils/utils.calendar'
 import type { DateCell } from '../types/types.calendar'
 
 export const useCalendarStore = defineStore('calendar', () => {
@@ -10,7 +10,7 @@ export const useCalendarStore = defineStore('calendar', () => {
   const today = new Date()
   const selectedDate = ref<Date>(today)
   // 基準月
-  const displayMonth = ref<string>(formatedMonth(selectedDate.value))
+  const displayMonth = ref<string>(formatedMonthJp(selectedDate.value))
   // 選択された日
 
 // head - 前の月
@@ -19,7 +19,7 @@ export const useCalendarStore = defineStore('calendar', () => {
     prevFirstDate.setMonth(prevFirstDate.getMonth() - 1)
     prevFirstDate.setDate(1)
     selectedDate.value = prevFirstDate
-    displayMonth.value = formatedMonth(prevFirstDate)
+    displayMonth.value = formatedMonthJp(prevFirstDate)
   }
 // head - 次の月
   const nextMonth = () => {
@@ -27,7 +27,7 @@ export const useCalendarStore = defineStore('calendar', () => {
     nextFirstDate.setMonth(nextFirstDate.getMonth() + 1)
     nextFirstDate.setDate(1)
     selectedDate.value = nextFirstDate
-    displayMonth.value = formatedMonth(nextFirstDate)
+    displayMonth.value = formatedMonthJp(nextFirstDate)
   }
 
 const clickDate = (dateKey: string) => {

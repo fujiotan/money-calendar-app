@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import HomeView from '../views/HomeView.vue'
 import MoneyView from '../views/MoneyView.vue'
+import MoneyCreateView from '../views/MoneyCreateView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,6 +16,11 @@ const router = createRouter({
       path: '/money',
       name: 'money',
       component: MoneyView
+    },
+    {
+      path: '/create',
+      name: 'create',
+      component: MoneyCreateView
     }
   ]
 })
