@@ -16,3 +16,13 @@ export const incomes = {
   extraIncome: '臨時収入'
 } as const
 export type IncomeType = keyof typeof incomes
+
+export const transactionTypes = {
+  income: '収入',
+  expense: '支出'
+} as const
+export type TransactionType = keyof typeof transactionTypes
+
+export const getCategoryOptions = (type: TransactionType) => {
+  return type === 'expense' ? expenses : incomes
+}

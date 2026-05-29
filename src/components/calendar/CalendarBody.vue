@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { formatedDateJp } from '../../utils/utils.calendar';
-
 import type { DateCell } from '../../types/types.calendar';
 
 const props = defineProps<{
@@ -8,13 +6,10 @@ const props = defineProps<{
   selectedDate: Date
 }>()
 
-console.log(props.selectedDate)
-
 const emit = defineEmits<{
   (e: 'clickDate', dateKey: string): void
 }>()
 </script>
-
 
 <template>
   <div class="week-row">
@@ -31,11 +26,4 @@ const emit = defineEmits<{
       </div>
     </div>
   </div>
-  <div>
-    <div>{{ formatedDateJp(props.selectedDate) }}</div>
-
-
-
-  </div>
-
 </template>

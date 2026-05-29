@@ -6,7 +6,7 @@
         <RouterLink to=""></RouterLink>
         <RouterLink to=""></RouterLink>
         <RouterLink to="/">ホーム</RouterLink>
-        <RouterLink to="/create">新規作成</RouterLink>
+        <RouterLink to="/money/create">新規作成</RouterLink>
       </nav>
     </header>
 
@@ -193,6 +193,7 @@ form select, form input {padding: 5px;min-width: 150px;}
 
 button, .button {
   cursor: pointer;
+  margin: 5px;
 }
 
 .button-link {

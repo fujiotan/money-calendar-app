@@ -1,124 +1,69 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-import { expenses, incomes } from '../../constants/money'
-import { useCalendarStore } from '../../stores/stores.calendar'
 import { formatedDate } from '../../utils/utils.calendar'
+import { useCalendarStore } from '../../stores/stores.calendar'
+import { useMoneyStore } from '../../stores/stores.money'
+import { getCategoryOptions } from '../../constants/money'
+import { useMoneyUtils } from '../../utils/utils.money'
 
-import type { ExpenseType, IncomeType } from '../../constants/money'
-import type { transactionData } from '../../types/types.money'
+import type { ExpenseType, IncomeType, TransactionType } from '../../constants/money'
+import type { TransactionData } from '../../types/types.money'
 
+const router = useRouter()
 const calendarStore = useCalendarStore()
+const moneyStore = useMoneyStore()
+const moneyUtils = useMoneyUtils()
 
-const STORAGE_KEY = 'strage'
+const transactionType = ref<TransactionType>('expense')
 
-const localStorageItems = () => {
-  const saved = localStorage.getItem(STORAGE_KEY)
-  if(!saved) return []
-
-  try {
-    const parsed: unknown = JSON.parse(saved)
-    if(!Array.isArray(parsed)) return []
-
-    return parsed.filter((item): item is transactionData => {
-      return (
-        typeof item === 'object' &&
-        item !== null &&
-        'id' in item &&
-        'date' in item &&
-        'type' in item &&
-        'category' in item &&
-        'name' in item &&
-        'amount' in item &&
-        'createdAt' in item &&
-        'updatedAt' in item 
-      )
-    })
-  }catch{
-    return []
-  }
-}
-
-console.log(localStorageItems())
-
-type TransactionType = 'income' | 'expense'
-
-const transactionType = ref<TransactionType>('income')
-const transactions = ref<transactionData[]>(localStorageItems())
-const transactionDate = ref<String>(formatedDate(calendarStore.selectedDate))
-const categoryType = ref< ExpenseType | IncomeType >('salary')
-const productName = ref<string>('')
+const transactionDate = ref<string>(formatedDate(calendarStore.selectedDate))
+const categoryType = ref< ExpenseType | IncomeType >('life')
+const name = ref<string>('')
 const amount = ref<number>(0)
 const message = ref<string>('')
 
-const datas = ref(localStorageItems)
-const total = ref<number>(0)
+const handleSubmit = () => {
 
-const categoryOptions = computed(()=>{
-  return transactionType.value === 'expense' ? expenses : incomes
-})
+  message.value = moneyUtils.formValidate(name.value, amount.value)
 
-watch(
-  transactionType, 
-   (newValue) => {
-    categoryType.value = newValue === 'income' ? 'salary' : 'life'
-  }
-)
-
-const onSubmit = () => {
-  if(!productName.value && amount.value === 0){
-    message.value = "品名と金額を入力してください"
-    return
-  }else if(!productName.value) {
-    message.value = "品名を入力してください"
-    return
-  }else if(amount.value === 0){
-    message.value = "金額を入力してください"
-    return
-  }
-
-  const transactionData:transactionData = {
+  const transactionData: TransactionData = {
     id: new Date().getTime(),
-    date: calendarStore.selectedDate,
+    date: transactionDate.value,
     type: transactionType.value,
     category: categoryType.value, 
-    name: productName.value,
+    name: name.value,
     amount: Number(amount.value),
     createdAt: new Date().toLocaleDateString('sv-SE'),
     updatedAt: new Date().toLocaleDateString('sv-SE'), 
   }
-  transactions.value.push(transactionData)
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions.value))
+  moneyStore.addData(transactionData)
 
   //reset
-  transactionType.value = "income"
-  productName.value = ''
-  amount.value = 0
-
+  router.push('/')
 }
-
 </script>
 
 <template>
   <p>{{ message? message : '' }}</p>
-  <form @submit.prevent="onSubmit">
+  <form @submit.prevent="handleSubmit">
     <div>
       <input type="date" v-model="transactionDate" /> 
     </div>
     <div>
       <select v-model="transactionType">
-        <option value="income">収入</option>
         <option value="expense">支出</option>
+        <option value="income">収入</option>
       </select>
     </div>
     <div>
       <select v-model="categoryType">
-        <option v-for="(value, key) in categoryOptions" :key="key" :value="key">{{ value }}</option>
+        <option v-for="(value, key) in getCategoryOptions(transactionType)" :key="key" :value="key">{{ value }}</option>
       </select>
     </div>
     <div>
-      名称 <input type="text" v-model="productName" min="0" step="1" placeholder="対象の品名を入力">
+      名称 <input type="text" v-model="name" min="0" step="1" placeholder="対象の品名を入力">
     </div>
     <div>
       金額 <input type="number" v-model.number="amount" min="0" step="1">

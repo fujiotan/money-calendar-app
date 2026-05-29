@@ -4,7 +4,10 @@ import CalendarBody from '../components/calendar/CalendarBody.vue';
 import CalendarModal from '../components/calendar/CalendarModal.vue';
 
 import { useCalendarStore } from '../stores/stores.calendar';
-const storeCalendar = useCalendarStore()
+import { useMoneyStore } from '../stores/stores.money'
+
+const calendarStore = useCalendarStore()
+const moneyStore = useMoneyStore()
 
 </script>
 
@@ -13,17 +16,19 @@ const storeCalendar = useCalendarStore()
   <div class="app">
     <div class="calendar-panel">
       <CalendarHead
-        :display-month="storeCalendar.displayMonth"
-        @prevMonth="storeCalendar.prevMonth"
-        @nextMonth="storeCalendar.nextMonth"
+        :display-month="calendarStore.displayMonth"
+        @prevMonth="calendarStore.prevMonth"
+        @nextMonth="calendarStore.nextMonth"
       />
       <CalendarBody
-        :create-date="storeCalendar.createDate"
-        :selected-date="storeCalendar.selectedDate"
-        @clickDate="storeCalendar.clickDate"
+        :create-date="calendarStore.createDate"
+        :selected-date="calendarStore.selectedDate"
+        @clickDate="calendarStore.clickDate"
       />
       <CalendarModal
-        
+        :selected-date="calendarStore.selectedDate"
+        :selected-date-data="moneyStore.selectedDateData"
+        @delete="moneyStore.deleteData"
       />
     </div>
   </div>

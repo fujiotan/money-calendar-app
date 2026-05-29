@@ -1,8 +1,10 @@
-export interface transactionData{
+import type { ExpenseType, IncomeType, TransactionType } from "../constants/money"
+
+export interface TransactionData{
   id: number
-  date: Date
-  type: string
-  category: string
+  date: string
+  type: TransactionType
+  category: ExpenseType | IncomeType
   name: string
   amount: number
   createdAt: string
